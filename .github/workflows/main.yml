@@ -1,0 +1,28 @@
+name: Generate GitHub Metrics
+
+on:
+  schedule: # Runs at 00:00 on the first day of every month
+    - cron: '0 0 1 * *'
+  workflow_dispatch: # Allow manual run from the Actions tab
+
+jobs:
+  generate-metrics:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Generate GitHub Metrics
+        uses: lowlighter/metrics@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user: fernandonpa
+          template: classic
+          base: header, isocalendar
+          config_timezone: "Asia/Colombo" # Adjust timezone as needed
